@@ -35,9 +35,9 @@ class Helper:
         return wrapper
     
     @staticmethod
-    def display_original_sobel(input_image, filtered_image):
+    def display_original_filtered(input_image, filtered_image):
         """
-        Displays the original image and the Sobel filtered image
+        Displays the original image and the filtered image
 
         Parameters:
         input_image: the array representation of the input image (original)
