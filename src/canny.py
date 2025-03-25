@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-from sobel import Sobel
+from .sobel import Sobel
 #from utils import Helper
 
 class Canny:

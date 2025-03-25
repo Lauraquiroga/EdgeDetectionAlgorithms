@@ -32,3 +32,5 @@ class Sobel:
                 gx = np.sum(np.multiply(self.sobelx, self.image[i:i + 3, j:j + 3]))  # x direction
                 gy = np.sum(np.multiply(self.sobely, self.image[i:i + 3, j:j + 3]))  # y direction
                 sobel_filtered_image[i + 1, j + 1] = np.sqrt(gx ** 2 + gy ** 2)  # calculate the magnitude of the gradient
+
+        return sobel_filtered_image
