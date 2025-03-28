@@ -10,6 +10,8 @@ class Roberts:
     The operator consists of a pair of 2×2 convolution kernels:
     Gx = [[ 1, 0],      Gy = [[ 0, -1],
           [ 0,-1]]            [ 1,  0]]
+
+    Code adapted from: https://github.com/adamiao/sobel-filter-tutorial/blob/master/sobel_from_scratch.py
     """
 
     def __init__(self, image):
