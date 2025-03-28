@@ -18,6 +18,9 @@ class Canny:
         - low_threshold: int, lower threshold for hysteresis (optional).
         - high_threshold: int, upper threshold for hysteresis (optional).
         """
+        if len(self.image.shape) == 3:
+            raise ValueError("Input image must be grayscale")
+        
         self.image = image
         self.low_threshold = low_threshold
         self.high_threshold = high_threshold
@@ -39,22 +42,21 @@ class Canny:
     
     def compute_intensity_gradient(self, blurred_image):
         """
-        Step 2: Compute the gradient magnitude and direction using the Sobel operator.
-        
+        Step 2: Compute the gradient magnitude and direction using OpenCV's Sobel operator.
+
         Parameters:
         - blurred_image: np.array, smoothed image after Gaussian blur.
-        
+
         Returns:
         - magnitude: np.array, gradient magnitude.
         - direction: np.array, gradient direction in radians.
         """
-        sobel = Sobel(blurred_image)
-        grad_x = sobel.sobelx
-        grad_y = sobel.sobely
-        
-        magnitude = np.sqrt(grad_x ** 2 + grad_y ** 2)
-        direction = np.arctan2(grad_y, grad_x)  # Angle in radians
-        
+        grad_x = cv2.Sobel(blurred_image, cv2.CV_64F, 1, 0, ksize=5)
+        grad_y = cv2.Sobel(blurred_image, cv2.CV_64F, 0, 1, ksize=5)
+
+        magnitude = np.hypot(grad_x, grad_y)  # More stable than sqrt(x**2 + y**2)
+        direction = np.arctan2(grad_y, grad_x)  # Radians
+
         return magnitude, direction
     
     def non_maximum_suppression(self, magnitude, direction):
@@ -71,9 +73,10 @@ class Canny:
         rows, cols = magnitude.shape
         suppressed = np.zeros((rows, cols), dtype=np.float32)
         
+        
         # Convert direction from radians to degrees (0 to 180 range)
         angle = direction * (180.0 / np.pi) % 180  
-        
+        angle = np.nan_to_num(angle)  # Replaces NaN with 0, inf with large finite number
         for i in range(1, rows - 1):  # Ignore image borders
             for j in range(1, cols - 1):  
                 q = 255
