@@ -1,5 +1,15 @@
 import numpy as np
 
+"""
+Code adapted from: https://github.com/adamiao/sobel-filter-tutorial/blob/master/sobel_from_scratch.py
+    Modified by Laura Quiroga (Lauraquiroga) on Feb 25, 2025
+    Changes: 
+    - Class Definition: The modified code introduces a Sobel class with an __init__ method to initialize the kernels and image.
+    - Methods: The Sobel edge detection logic is moved into a find_edges method of the class, which is responsible for applying the Sobel operator and returning the edge-detected image.
+    - Image Input: The original code uses the imread function to read the image, whereas the modified version expects a 2D grayscale image to be passed directly to the class during initialization.
+    - Edge Calculation: The core logic for applying the Sobel kernels to the image remains unchanged, but it's now inside the find_edges method and applied on the class instance's image attribute.
+"""
+
 class Sobel:
     """
     Class implementing the Sobel edge detection algorithm.
@@ -8,8 +18,6 @@ class Sobel:
     the gradient magnitude of an image using two 3x3 convolution kernels: one for 
     detecting changes in the horizontal direction (x) and another for the vertical 
     direction (y).
-
-    Code adapted from: https://github.com/adamiao/sobel-filter-tutorial/blob/master/sobel_from_scratch.py
     """
 
     def __init__(self, image):

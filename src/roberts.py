@@ -1,5 +1,15 @@
 import numpy as np
 
+"""
+Code adapted from: https://github.com/adamiao/sobel-filter-tutorial/blob/master/sobel_from_scratch.py
+    Modified by Emon Sarker (emondsarker) on March 26, 2025
+    Changes: 
+    - Kernel Definition: The Sobel kernels (sobelx and sobely) have been replaced with the 2x2 Roberts Cross kernels (robertsx and robertsy).
+    - Convolution Operation: The Sobel filter operates on 3x3 patches, whereas the Roberts filter operates on 2x2 patches.
+    - Loop Range: The loop for applying the filter is adjusted to iterate over smaller 2x2 regions instead of 3x3 regions.
+    - Edge Magnitude Calculation: In the find_edges method, the gradient magnitudes are calculated based on the Roberts filter's results using the 2x2 kernels.
+"""
+
 class Roberts:
     """
     Class implementing the Roberts Cross algorithm for edge detection
@@ -10,8 +20,6 @@ class Roberts:
     The operator consists of a pair of 2×2 convolution kernels:
     Gx = [[ 1, 0],      Gy = [[ 0, -1],
           [ 0,-1]]            [ 1,  0]]
-
-    Code adapted from: https://github.com/adamiao/sobel-filter-tutorial/blob/master/sobel_from_scratch.py
     """
 
     def __init__(self, image):

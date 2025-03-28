@@ -56,4 +56,5 @@ The Canny algorithm was first described in:
 J. F. Canny, "A Computational Approach to Edge Detection," IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. PAMI-8, no. 6, pp. 679-698, Nov. 1986.         
 
 Code in Sobel and Roberts classes was adapted from:            
-adamiao. sobel-filter-tutorial. Accessed: 2025-02-25. 2019. url: https://github.com/adamiao/sobel-filter-tutorial/blob/master/sobel_from_scratch.py      
+adamiao. sobel-filter-tutorial. Accessed: 2025-02-25. 2019. url: https://github.com/adamiao/sobel-filter-tutorial/blob/master/sobel_from_scratch.py         
+Which is licensed under the GNU General Public License v3.0 (GPL-3.0)    
