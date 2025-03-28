@@ -42,8 +42,7 @@ Follow these steps to run the project:
 
 ## References         
 
-The Sobel edge detection algorithm was first described by Irwin Sobel and Gary Feld-
-man in 1968 as part of the Stanford Artificial Intelligence Laboratory (SAIL)
+The Sobel edge detection algorithm was first described by Irwin Sobel and Gary Feldman in 1968 as part of the Stanford Artificial Intelligence Laboratory (SAIL)
 project:          
 I. Sobel and G. Feldman, “A 3×3 isotropic gradient operator for image
 processing,” Pattern Classification and Scene Analysis, pp. 271–272, 01
