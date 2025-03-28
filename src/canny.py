@@ -18,14 +18,15 @@ class Canny:
         - low_threshold: int, lower threshold for hysteresis (optional).
         - high_threshold: int, upper threshold for hysteresis (optional).
         """
-        if len(self.image.shape) == 3:
-            raise ValueError("Input image must be grayscale")
         
         self.image = image
         self.low_threshold = low_threshold
         self.high_threshold = high_threshold
         self.strong_pixel = None  # Strong edges (default: 255)
         self.weak_pixel = None    # Weak edges (default: 50)
+
+        if len(self.image.shape) == 3:
+            raise ValueError("Input image must be grayscale")
     
     def apply_gaussian_blur(self, k=(5, 5), sigma=1.4):
         """
@@ -123,9 +124,9 @@ class Canny:
         if len(flat) == 0:
             return 0, 0  # fallback
 
-        low = np.percentile(flat, 25)
-        high = np.percentile(flat, 75)
-        
+        low = np.percentile(flat, 20)
+        high = np.percentile(flat, 50)
+
         return low, high
 
     def double_thresholding(self, suppressed):
