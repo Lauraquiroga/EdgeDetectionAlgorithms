@@ -109,19 +109,25 @@ class Canny:
     
     def adaptive_thresholding(self, magnitude):
         """
-        Compute adaptive thresholds using the median of the gradient magnitude.
-        
+        Compute robust adaptive thresholds using percentile values.
+
         Parameters:
         - magnitude: np.array, gradient magnitude.
-        
+
         Returns:
         - (low, high): tuple, lower and upper thresholds.
         """
-        median_val = np.median(magnitude)
-        low = max(0, 0.5 * median_val)
-        high = min(255, 1.5 * median_val)
+        # Flatten and remove zeros (since most are zero)
+        flat = magnitude[magnitude > 0].ravel()
+
+        if len(flat) == 0:
+            return 0, 0  # fallback
+
+        low = np.percentile(flat, 25)
+        high = np.percentile(flat, 75)
+        
         return low, high
-    
+
     def double_thresholding(self, suppressed):
         """
         Step 4: Apply double thresholding to classify strong and weak edges.
