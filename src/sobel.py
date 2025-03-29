@@ -60,6 +60,10 @@ class Sobel:
                 gy = np.sum(np.multiply(self.sobely, self.image[i:i + 3, j:j + 3])) 
 
                 # Compute the gradient magnitude
-                sobel_filtered_image[i + 1, j + 1] = np.sqrt(gx ** 2 + gy ** 2) 
+                sobel_filtered_image[i + 1, j + 1] = np.sqrt(gx ** 2 + gy ** 2)
 
-        return sobel_filtered_image
+        # Normalize to 0-255 range
+        if np.max(sobel_filtered_image) > 0:  # Avoid division by zero
+            sobel_filtered_image = sobel_filtered_image * (255.0 / np.max(sobel_filtered_image))
+
+        return sobel_filtered_image.astype(np.uint8)

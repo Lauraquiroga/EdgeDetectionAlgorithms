@@ -51,4 +51,8 @@ class Roberts:
                 # Calculate the magnitude of the gradient
                 roberts_filtered_image[i, j] = np.sqrt(gx ** 2 + gy ** 2)
 
-        return roberts_filtered_image
+        # Normalize to 0-255 range
+        if np.max(roberts_filtered_image) > 0:  # Avoid division by zero
+            roberts_filtered_image = roberts_filtered_image * (255.0 / np.max(roberts_filtered_image))
+
+        return roberts_filtered_image.astype(np.uint8)
