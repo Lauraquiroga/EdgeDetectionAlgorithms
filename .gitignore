@@ -2,3 +2,16 @@
 .DS_Store
 /edgeDetectionEnv
 **/.ipynb_checkpoints
+
+/input_images/*.jpg
+
+/bw_input_images/*.jpg
+/bw_output_images/canny/*.jpg
+/bw_output_images/roberts/*.jpg
+/bw_output_images/sobel/*.jpg
+
+/mat_bin_ground_truth/*.mat
+/outputs/*.png
+
+/synthetic_images/*.png
+/synthetic_image_edges/*.png
