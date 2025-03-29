@@ -1,7 +1,4 @@
 import numpy as np
-import cv2
-from .sobel import Sobel
-#from utils import Helper
 
 class Canny:
     """
@@ -28,6 +25,31 @@ class Canny:
         if len(self.image.shape) == 3:
             raise ValueError("Input image must be grayscale")
     
+    def create_gaussian_kernel(self, size, sigma):
+        """
+        Create a Gaussian kernel for blurring.
+        
+        Parameters:
+        - size: int, kernel size (must be odd)
+        - sigma: float, standard deviation for Gaussian kernel
+        
+        Returns:
+        - np.array: 2D Gaussian kernel
+        """
+        # Ensure size is odd
+        if size % 2 == 0:
+            size += 1
+            
+        # Create coordinate grid
+        ax = np.linspace(-(size - 1) / 2., (size - 1) / 2., size)
+        xx, yy = np.meshgrid(ax, ax)
+        
+        # Calculate kernel values
+        kernel = np.exp(-0.5 * (np.square(xx) + np.square(yy)) / np.square(sigma))
+        
+        # Normalize kernel
+        return kernel / np.sum(kernel)
+    
     def apply_gaussian_blur(self, k=(5, 5), sigma=1.4):
         """
         Step 1: Apply Gaussian blur to smooth the image and reduce noise.
@@ -39,11 +61,26 @@ class Canny:
         Returns:
         - np.array, blurred image.
         """
-        return cv2.GaussianBlur(self.image, k, sigma)
+        # Create Gaussian kernel
+        kernel = self.create_gaussian_kernel(k[0], sigma)
+        
+        # Apply convolution
+        rows, cols = self.image.shape
+        pad = k[0] // 2
+        padded = np.pad(self.image, ((pad, pad), (pad, pad)), mode='reflect')
+        blurred = np.zeros_like(self.image, dtype=np.float64)
+        
+        for i in range(rows):
+            for j in range(cols):
+                # Extract window and apply kernel
+                window = padded[i:i + k[0], j:j + k[0]]
+                blurred[i, j] = np.sum(window * kernel)
+                
+        return blurred
     
     def compute_intensity_gradient(self, blurred_image):
         """
-        Step 2: Compute the gradient magnitude and direction using OpenCV's Sobel operator.
+        Step 2: Compute the gradient magnitude and direction using our Sobel implementation.
 
         Parameters:
         - blurred_image: np.array, smoothed image after Gaussian blur.
@@ -52,12 +89,24 @@ class Canny:
         - magnitude: np.array, gradient magnitude.
         - direction: np.array, gradient direction in radians.
         """
-        grad_x = cv2.Sobel(blurred_image, cv2.CV_64F, 1, 0, ksize=5)
-        grad_y = cv2.Sobel(blurred_image, cv2.CV_64F, 0, 1, ksize=5)
-
+        # Define Sobel kernels for x and y directions
+        sobel_x = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
+        sobel_y = np.array([[1, 2, 1], [0, 0, 0], [-1, -2, -1]])
+        
+        rows, cols = blurred_image.shape
+        grad_x = np.zeros((rows, cols))
+        grad_y = np.zeros((rows, cols))
+        
+        # Apply Sobel kernels
+        for i in range(1, rows - 1):
+            for j in range(1, cols - 1):
+                grad_x[i, j] = np.sum(sobel_x * blurred_image[i-1:i+2, j-1:j+2])
+                grad_y[i, j] = np.sum(sobel_y * blurred_image[i-1:i+2, j-1:j+2])
+        
+        # Calculate magnitude and direction
         magnitude = np.hypot(grad_x, grad_y)  # More stable than sqrt(x**2 + y**2)
         direction = np.arctan2(grad_y, grad_x)  # Radians
-
+        
         return magnitude, direction
     
     def non_maximum_suppression(self, magnitude, direction):
