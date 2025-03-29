@@ -10,7 +10,7 @@ class ImageProcessor:
     Process images with multiple edge detection algorithms.
     Allows easy configuration of input and output directories.
     """
-    def __init__(self, input_dir="bw_input_images", output_dir="bw_output_images"):
+    def __init__(self, input_dir="input_images", output_dir="bw_output_images"):
         self.input_dir = input_dir
         self.output_dir = output_dir
         self.algorithms = {
@@ -49,7 +49,7 @@ class ImageProcessor:
 
     def process_images(self):
         """
-        Process all images in input directory with all algorithms.
+        Process all images in input direcry with all algorithms.
         Save results to algorithm-specific subdirectories in output directory.
         """
         # Check input directory exists
